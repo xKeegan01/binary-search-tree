@@ -58,6 +58,40 @@ class BinarySearchTree {
         }
         return false;
     }
+
+//remove specific node from tree
+    remove(val) {
+        const removeNode = (node, val) => {
+            if (!node) {
+                return null;
+            }
+            if (val == node.val) {
+                if (!node.left && !node.right) {
+                    return null;
+                }
+                if (!node.left) {
+                    return node.right;
+                }
+                if (!node.right) {
+                    return node.left;
+                }
+                let temp = node.right;
+                while (!temp.left) {
+                    temp = temp.left;
+                }
+                node.val = temp.val;
+                node.right = removeNode(node.right, temp.val);
+            } else if (val < node.val) {
+                node.left = removeNode(node.left, val);
+                return node;
+            } else {
+                node.right = removeNode(node.right, val);
+                return node;
+            }
+        };
+        this.root = removeNode(this.root, val);
+        return true;
+    }
 }
 
 let tree = new BinarySearchTree();
